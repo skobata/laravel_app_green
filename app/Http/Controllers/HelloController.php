@@ -10,17 +10,18 @@ class HelloController extends Controller
 {
     public function index(Request $request): View
     {
-        $msg = $request->msg ?: 'This Message Is Sample';
-
         $data = [
-            'msg' => $msg,
+            'msg' => $request->hello,
         ];
 
         return view('hello.index', $data);
     }
 
-    public function other(): RedirectResponse
+    public function other(Request $request): View
     {
-        return redirect()->route('hello', ['msg' => 'this is other msg']);
+        $data = [
+            'msg' => $request->bye,
+        ];
+        return view('hello.index', $data);
     }
 }

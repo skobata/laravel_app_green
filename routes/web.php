@@ -1,7 +1,8 @@
 <?php
-
+namespace App\Http\Controllers\Sample;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HelloController;
+use App\Http\Middleware\HelloMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,5 +19,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello', [HelloController::class, 'index'])->name('hello');
-Route::get('/hello/other', [HelloController::class, 'other']);
+Route::middleware([HelloMiddleware::class])->controller(HelloController::class)->prefix('hello/')->group(function () {
+    Route::get('{id}', 'index')->whereNumber('id');
+    Route::get('other', 'other')->name('.other');
+});
+
+Route::namespace('Sample')->prefix('sample')->group(function () {
+    Route::get('', [SampleController::class, 'index']);
+    Route::get('/other', [SampleController::class, 'other']);
+});
